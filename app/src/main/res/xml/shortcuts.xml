@@ -1,0 +1,5 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut android:shortcutId="screen_search" android:enabled="true" android:icon="@android:drawable/ic_menu_search" android:shortcutShortLabel="@string/search_shortcut">
+        <intent android:action="org.circleopensearch.SEARCH" android:targetPackage="org.circleopensearch" android:targetClass="org.circleopensearch.LaunchActivity"/>
+    </shortcut>
+</shortcuts>

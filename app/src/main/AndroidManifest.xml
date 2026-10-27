@@ -1,0 +1,20 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<permission android:name="org.circleopensearch.permission.LAUNCH" android:protectionLevel="signature"/>
+<uses-permission android:name="org.circleopensearch.permission.LAUNCH"/>
+<uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.RECORD_AUDIO"/>
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION"/>
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE"/>
+<queries><intent><action android:name="android.intent.action.SEND"/><data android:mimeType="image/png"/></intent></queries>
+<application android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher" android:theme="@style/AppTheme" android:label="Circle Open Search" android:allowBackup="false">
+<service android:name=".MusicCaptureService" android:process=":session" android:exported="false" android:foregroundServiceType="mediaProjection|microphone"/>
+<activity android:name=".MusicPermissionActivity" android:process=":session" android:exported="false" android:excludeFromRecents="true" android:taskAffinity="" android:theme="@style/PermissionRelayTheme"/>
+<activity android:name=".MainActivity" android:exported="true"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter><meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/></activity>
+<activity android:name=".LaunchActivity" android:exported="true" android:theme="@android:style/Theme.NoDisplay" android:excludeFromRecents="true"><intent-filter><action android:name="org.circleopensearch.SEARCH"/><category android:name="android.intent.category.DEFAULT"/></intent-filter></activity>
+<service android:name=".SearchAssistant" android:exported="true" android:permission="android.permission.BIND_VOICE_INTERACTION"><intent-filter><action android:name="android.service.voice.VoiceInteractionService"/></intent-filter><meta-data android:name="android.voice_interaction" android:resource="@xml/assistant"/></service>
+<service android:name=".SearchSessionService" android:exported="true" android:permission="android.permission.BIND_VOICE_INTERACTION" android:process=":session"/>
+<service android:name=".NoSpeechService" android:exported="true" android:permission="android.permission.BIND_SPEECH_RECOGNITION"><intent-filter><action android:name="android.speech.RecognitionService"/></intent-filter></service>
+<service android:name=".SearchTile" android:exported="true" android:label="Screen search" android:icon="@android:drawable/ic_menu_search" android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"><intent-filter><action android:name="android.service.quicksettings.action.QS_TILE"/></intent-filter></service>
+<provider android:name=".CropProvider" android:authorities="org.circleopensearch.crops" android:exported="false" android:grantUriPermissions="true"/>
+</application></manifest>

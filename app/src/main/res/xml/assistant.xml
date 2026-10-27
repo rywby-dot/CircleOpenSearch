@@ -1,0 +1,1 @@
+<voice-interaction-service xmlns:android="http://schemas.android.com/apk/res/android" android:sessionService="org.circleopensearch.SearchSessionService" android:recognitionService="org.circleopensearch.NoSpeechService" android:supportsAssist="true" android:supportsLaunchVoiceAssistFromKeyguard="false" />

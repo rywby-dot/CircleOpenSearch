@@ -1,0 +1,41 @@
+# Local build output and caches
+.gradle/
+.gradle-home/
+.kotlin/
+**/build/
+.cxx/
+.externalNativeBuild/
+__pycache__/
+*.py[cod]
+*.apk
+*.aab
+*.apks
+*.idsig
+*.log
+
+# Machine-specific settings
+local.properties
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Private signing material and environment configuration
+*.keystore
+*.jks
+*.p12
+*.pfx
+*.key
+keystore.properties
+signing.properties
+.env
+.env.*
+!.env.example
+
+# Local agent/account data
+/.aws/
+/.codex/
+/.agents/
+
+# Reference checkout; adapted code and license notices are already in app/src
+/ScreenColorPicker/

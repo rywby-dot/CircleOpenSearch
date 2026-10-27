@@ -1,0 +1,122 @@
+/*
+ * Copyright (c) 2026 Ratul Hasan
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ */
+package org.circleopensearch.colorpicker
+
+import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.PointF
+import android.os.Build
+import android.util.AttributeSet
+import android.view.View
+import kotlin.math.min
+
+class TargetView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null
+) : View(context, attrs) {
+
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+    private var holePercentage = 0.13f
+    private var mainStrokePct = 0.28f
+    private val locationArray = IntArray(2)
+
+    /**
+     * Sets the capture range which affects the hole size and inner circle size.
+     * @param range "small", "medium", or "large"
+     */
+    fun setCaptureRange(range: String) {
+        when (range) {
+            "small" -> {
+                holePercentage = 0.13f
+                mainStrokePct = 0.28f
+            }
+
+            "medium" -> {
+                holePercentage = 0.16f
+                mainStrokePct = 0.25f
+            }
+
+            "large" -> {
+                holePercentage = 0.19f
+                mainStrokePct = 0.22f
+            }
+        }
+        invalidate()
+    }
+
+    init {
+        setBackgroundColor(Color.TRANSPARENT)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            isForceDarkAllowed = false
+        }
+    }
+
+    /**
+     * Returns the center point of the view.
+     */
+    fun getScanOffset(): PointF {
+        getLocationOnScreen(locationArray)
+        return PointF(locationArray[0] + (width / 2f), locationArray[1] + (height / 2f))
+    }
+
+    /**
+     * Returns the size which can be safely captured without including
+     * the TargetView's decorative circles.
+     * Calculated to fit within the center hole area.
+     */
+    fun getSafeCropSize(): Int {
+        val size = min(width, height).toFloat()
+        val holeDiameter = size * (holePercentage * 2)
+        return (holeDiameter * 0.50f).toInt().coerceAtLeast(8)
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        val cx = width / 2f
+        val cy = height / 2f
+
+        val size = min(width, height).toFloat()
+
+        val thinStrokePct = 0.02f
+        val outerStrokePct = 0.05f
+
+        val holeRadius = size * holePercentage
+
+        val thinWidth = size * thinStrokePct
+        val mainWidth = size * mainStrokePct
+        val outerWidth = size * outerStrokePct
+
+        paint.style = Paint.Style.STROKE
+
+        // Inner Thin Circle
+        paint.color = Color.parseColor("#B4A9A9A9")
+        paint.strokeWidth = thinWidth
+        val r1 = holeRadius + (thinWidth / 2f)
+        canvas.drawCircle(cx, cy, r1, paint)
+
+        // Inner Main Circle
+        paint.color = Color.parseColor("#C8535353")
+        paint.strokeWidth = mainWidth
+        val r2 = holeRadius + thinWidth + (mainWidth / 2f)
+        canvas.drawCircle(cx, cy, r2, paint)
+
+        // Outer Medium Circle
+        paint.color = Color.parseColor("#E6A9A9A9")
+        paint.strokeWidth = outerWidth
+        val r3 = holeRadius + thinWidth + mainWidth + (outerWidth / 2f)
+        canvas.drawCircle(cx, cy, r3, paint)
+    }
+}
