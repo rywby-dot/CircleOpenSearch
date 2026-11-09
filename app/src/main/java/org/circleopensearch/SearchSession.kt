@@ -279,7 +279,7 @@ class SearchSession(context: Context) : VoiceInteractionSession(context) {
         if (picker != null || preparing) return
         handler.removeCallbacks(autoSearch)
         closeResults()
-        picker = ColorPickerOverlay(context, image) { closeColorPicker() }.also {
+        picker = ColorPickerOverlay(context, image) { hide() }.also {
             root.addView(it, FrameLayout.LayoutParams(-1, -1))
         }
         dock.visibility = View.GONE; close.visibility = View.GONE; selection.visibility = View.GONE

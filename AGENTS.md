@@ -51,7 +51,7 @@ Handle an early screenshot callback, duplicate delivery, unavailable/protected s
 
 The picker samples the existing screenshot. It must show the whole image, including any system bars already captured in its pixels. Hide the live system status/navigation bars through immersive mode; do not crop those areas out of the bitmap and stretch the remainder.
 
-Use original pixel coordinates for HEX values and the magnifier. The magnifier/HEX label copies `#RRGGBB`; coordinates can be copied separately. Close returns to search. No additional capture prompt or overlay permission is needed.
+Use original pixel coordinates for HEX values and the magnifier. The magnifier/HEX label copies `#RRGGBB`; coordinates can be copied separately. The picker's close X copies the current HEX code and dismisses the entire assistant session. Back returns to search without copying. Session cleanup must not implicitly copy a color. No additional capture prompt or overlay permission is needed.
 
 The optional `ScreenColorPicker/` directory was a reference checkout. It is ignored, is not built, and may be absent. The adapted views already live in `app/src/main/java/org/circleopensearch/colorpicker/`.
 

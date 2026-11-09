@@ -22,6 +22,7 @@ class ColorPickerOverlay(context: Context, private val bitmap: Bitmap,
     private var px = 0f
     private var py = 0f
     private var initialized = false
+    private var currentHex = PixelMapping.hex(bitmap.getPixel(bitmap.width / 2, bitmap.height / 2))
     private val backdrop = object : View(context) {
         private val source = Rect(0, 0, bitmap.width, bitmap.height)
         private val paint = Paint().apply { isFilterBitmap = false }
@@ -65,11 +66,14 @@ class ColorPickerOverlay(context: Context, private val bitmap: Bitmap,
         val zoom = Bitmap.createBitmap(17, 17, Bitmap.Config.ARGB_8888)
         for (dy in 0..16) for (dx in 0..16) zoom.setPixel(dx, dy,
             bitmap.getPixel((sx + dx - 8).coerceIn(0, bitmap.width - 1), (sy + dy - 8).coerceIn(0, bitmap.height - 1)))
-        val hex = PixelMapping.hex(bitmap.getPixel(sx, sy))
-        magnifier.updateContent(zoom, hex, sx, sy)
-        magnifier.contentDescription = "Color $hex. Tap to copy HEX."
+        currentHex = PixelMapping.hex(bitmap.getPixel(sx, sy))
+        magnifier.updateContent(zoom, currentHex, sx, sy)
+        magnifier.contentDescription = "Color $currentHex. Tap to copy HEX."
     }
-    override fun onCloseClicked() = onClose()
+    override fun onCloseClicked() {
+        copy("Color HEX", currentHex)
+        onClose()
+    }
     override fun onHexClicked(hex: String) { copy("Color HEX", hex) }
     override fun onCoordsClicked(coords: String) { copy("Pixel coordinates", coords) }
     private fun copy(label: String, value: String) {
