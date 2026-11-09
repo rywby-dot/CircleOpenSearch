@@ -38,7 +38,7 @@ manifest.getroot().find('application').set(f'{{{ns}}}debuggable', 'true')
 manifest.write(OUT / 'AndroidManifest.xml', encoding='utf-8', xml_declaration=True)
 run(TOOLS / 'aapt2', 'link', '-o', OUT / 'unsigned.apk', '--manifest', OUT / 'AndroidManifest.xml',
     '-I', ANDROID, '-A', ROOT / 'app/src/main/assets', '--min-sdk-version', '29', '--target-sdk-version', '35',
-    '--version-code', '11', '--version-name', '0.5.0', OUT / 'resources.zip')
+    '--version-code', '12', '--version-name', '0.5.1', OUT / 'resources.zip')
 dex = OUT / 'dex'
 dex.mkdir(exist_ok=True)
 for stale in dex.glob('*.dex'):
